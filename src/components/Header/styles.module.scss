@@ -1,0 +1,30 @@
+.headerContainer{
+    /* background: lightblue; */
+    background: var(--gray-800);
+    height: 6.5rem;
+
+    display: flex;
+    align-items:center;
+
+    padding: 2rem 4rem;
+    border-bottom: 1px solid var(--gray-100);
+
+    p {
+        color: var(--gray-100);
+        margin-left: 2rem;
+        padding: 0.25rem 0 0.25rem 2rem;
+        border-left: 1px solid var(--gray-100);
+    }
+
+    span {
+        color: var(--gray-100);
+        margin-left: auto;
+        text-transform: capitalize;
+    }
+
+    img {
+        fill: blue;
+        color: blue;
+    }
+
+}

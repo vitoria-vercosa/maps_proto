@@ -1,0 +1,16 @@
+.mapzoneContainer {
+    width: 90%;
+    height: 35rem;
+    border: 1.5px dashed var(--green-500);
+    border-radius: 1.5rem;
+    // background: linear-gradient(143.8deg, rgba(98, 116, 99, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(143.8deg, var(--gray-200) 0%, rgba(0, 0, 0, 0) 100%);
+    //      top right bottom left
+    margin: 2rem 3rem 2rem 3rem;
+    padding: 4rem;
+    text-align: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
