@@ -18,6 +18,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 <!-- The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
  -->
+ 
+## BingMaps
+
+This application uses Bing Maps V8 Web Control, Microsoft's modern web mapping developer kit optimized for Enterprise scenarios.
+
+The **SearchManager** class is the primary class used for performing forward and reverse geocode searches in the Search module.
+It has **the geocode method** that matches the address or place query in the specified request options to a location and returns the results to the request options callback function.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
