@@ -17,7 +17,7 @@ export function BingMaps(props){
         var objLayers = {
             'layer_Boundary' : new Microsoft.Maps.Layer(),
             'layer_Choropleth' : new Microsoft.Maps.Layer(),
-            'layer_Contour' : new Microsoft.Maps.Layer()
+            'layer_Contour' : new Microsoft.Maps.ContourLayer()
         }
 
         const searchAndLoadGeometry = () => {
@@ -108,7 +108,7 @@ export function BingMaps(props){
 
         const loadContour = () => {
 
-            var contourLine1, contourLine2, contourLine3, contourLine4, contourLine5, contourLine6;
+            // var contourLine1, contourLine2, contourLine3, contourLine4, contourLine5, contourLine6;
             var layer;
             Microsoft.Maps.loadModule(['Microsoft.Maps.Contour', 'Microsoft.Maps.GeoJson'], function () {
                 // Earthquake intensity contours of M7.0 – 1km WSW of Kumamoto-shi, Japan (GeoJson source from usgs.gov: http://earthquake.usgs.gov/archive/product/shakemap/us20005iis/us/1467057010522/download/cont_psa03.json)
@@ -117,9 +117,13 @@ export function BingMaps(props){
                 for (var i = 0; i < featureCollection.length; i++) {
                     contourLines.push(new Microsoft.Maps.ContourLine(featureCollection[i].getLocations(), featureCollection[i].metadata.value));
                 }
-                layer = new Microsoft.Maps.ContourLayer(contourLines,
-                    { colorCallback: assignContourColor, polygonOptions: { strokeColor: 'rgba(255, 255, 255, 0)' } });
-                map.layers.insert(layer);
+                // layer = new Microsoft.Maps.ContourLayer(contourLines,
+                objLayers.layer_Contour = new Microsoft.Maps.ContourLayer(contourLines,
+                    { 
+                        colorCallback: assignContourColor, 
+                        polygonOptions: { strokeColor: 'rgba(255, 255, 255, 0)' } 
+                    });
+                map.layers.insert(objLayers.layer_Contour);
             });
 
             function assignContourColor(value) {
@@ -137,55 +141,6 @@ export function BingMaps(props){
                 }
                 return color;
             }
-            /*
-            var earthquakeIntensity = require('../../../public/earthquake_usgs_gov_cont_psa03.json');
-            console.log(earthquakeIntensity);
-
-            //Load the Contour and GeoJson modules.
-            Microsoft.Maps.loadModule(['Microsoft.Maps.Contour', 'Microsoft.Maps.GeoJson'], function () {
-                //Download the contour data from the USGS. Parse the GeoJson earthquake intensity contour data and create contour lines out of them.
-                Microsoft.Maps.GeoJson.readFromUrl(earthquakeIntensity, function (data) {
-
-                    var contourLines = [];
-                    for (var i = 0; i < data.length; i++) {
-                        contourLines.push(new Microsoft.Maps.ContourLine(data[i].getLocations(), data[i].metadata.value));
-                    }
-
-                    //Add the contour lines to a contour layer.
-                    var contourlayer = new Microsoft.Maps.ContourLayer(contourLines, {
-                        colorCallback: assignContourColor,
-                        polygonOptions: {
-                            //Make the outlines of the contour area transparent.
-                            strokeColor: 'rgba(0, 0, 0, 0)'
-                        }
-                    });
-
-                    //Add the contour layer to the map.
-                    map.layers.insert(contourlayer);
-                    // objLayers.layer_Contour.add(contourlayer);
-                    // map.layers.insert(objLayers.layer_Contour);
-                });
-            });
-
-            const assignContourColor = (value) => {
-                var color = 'rgba(25, 150, 65, 0.5)';
-        
-                if (value >= 200) {
-                    color = 'rgba(215, 25, 28, 0.5)';
-                }
-                else if (value >= 160) {
-                    color = 'rgba(235, 140, 14, 0.5)';
-                }
-                else if (value >= 120) {
-                    color = 'rgba(255, 255, 0, 0.5)';
-                }
-                else if (value >= 80) {
-                    color = 'rgba(140, 202, 32, 0.5)';
-                }
-        
-                return color;
-            }
-            */
         
         }
 
@@ -193,6 +148,7 @@ export function BingMaps(props){
             searchAndLoadGeometry();
         }
         loadContour();
+        objLayers.layer_Contour.getVisible(false);
 
         return map;
     }
