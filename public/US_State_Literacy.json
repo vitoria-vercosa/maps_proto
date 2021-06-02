@@ -1,0 +1,308 @@
+﻿[
+  {
+    "fipsCode": "1",
+    "stateName": "Alabama",
+    "population": "3,399,775",
+    "lackingLiteracy": "15"
+  },
+  {
+    "fipsCode": "2",
+    "stateName": "Alaska",
+    "population": "460,997",
+    "lackingLiteracy": "9"
+  },
+  {
+    "fipsCode": "4",
+    "stateName": "Arizona",
+    "population": "4,083,287",
+    "lackingLiteracy": "13"
+  },
+  {
+    "fipsCode": "5",
+    "stateName": "Arkansas",
+    "population": "2,044,669",
+    "lackingLiteracy": "14"
+  },
+  {
+    "fipsCode": "6",
+    "stateName": "California",
+    "population": "26,029,840",
+    "lackingLiteracy": "23"
+  },
+  {
+    "fipsCode": "8",
+    "stateName": "Colorado",
+    "population": "3,385,807",
+    "lackingLiteracy": "10"
+  },
+  {
+    "fipsCode": "9",
+    "stateName": "Connecticut",
+    "population": "2,668,989",
+    "lackingLiteracy": "9"
+  },
+  {
+    "fipsCode": "10",
+    "stateName": "Delaware",
+    "population": "618,525",
+    "lackingLiteracy": "11"
+  },
+  {
+    "fipsCode": "11",
+    "stateName": "District of Columbia",
+    "population": "425,630",
+    "lackingLiteracy": "19"
+  },
+  {
+    "fipsCode": "12",
+    "stateName": "Florida",
+    "population": "13,040,318",
+    "lackingLiteracy": "20"
+  },
+  {
+    "fipsCode": "13",
+    "stateName": "Georgia",
+    "population": "6,365,942",
+    "lackingLiteracy": "17"
+  },
+  {
+    "fipsCode": "15",
+    "stateName": "Hawaii",
+    "population": "944,472",
+    "lackingLiteracy": "16"
+  },
+  {
+    "fipsCode": "16",
+    "stateName": "Idaho",
+    "population": "1,000,313",
+    "lackingLiteracy": "11"
+  },
+  {
+    "fipsCode": "17",
+    "stateName": "Illinois",
+    "population": "9,507,861",
+    "lackingLiteracy": "13"
+  },
+  {
+    "fipsCode": "18",
+    "stateName": "Indiana",
+    "population": "4,633,843",
+    "lackingLiteracy": "8"
+  },
+  {
+    "fipsCode": "19",
+    "stateName": "Iowa",
+    "population": "2,249,427",
+    "lackingLiteracy": "7"
+  },
+  {
+    "fipsCode": "20",
+    "stateName": "Kansas",
+    "population": "2,048,059",
+    "lackingLiteracy": "8"
+  },
+  {
+    "fipsCode": "21",
+    "stateName": "Kentucky",
+    "population": "3,202,516",
+    "lackingLiteracy": "12"
+  },
+  {
+    "fipsCode": "22",
+    "stateName": "Louisiana",
+    "population": "3,313,847",
+    "lackingLiteracy": "16"
+  },
+  {
+    "fipsCode": "23",
+    "stateName": "Maine",
+    "population": "1,036,269",
+    "lackingLiteracy": "7"
+  },
+  {
+    "fipsCode": "24",
+    "stateName": "Maryland",
+    "population": "4,190,921",
+    "lackingLiteracy": "11"
+  },
+  {
+    "fipsCode": "25",
+    "stateName": "Massachusetts",
+    "population": "5,096,670",
+    "lackingLiteracy": "10"
+  },
+  {
+    "fipsCode": "26",
+    "stateName": "Michigan",
+    "population": "7,629,134",
+    "lackingLiteracy": "8"
+  },
+  {
+    "fipsCode": "27",
+    "stateName": "Minnesota",
+    "population": "3,852,097",
+    "lackingLiteracy": "6"
+  },
+  {
+    "fipsCode": "28",
+    "stateName": "Mississippi",
+    "population": "2,116,087",
+    "lackingLiteracy": "16"
+  },
+  {
+    "fipsCode": "29",
+    "stateName": "Missouri",
+    "population": "4,321,763",
+    "lackingLiteracy": "7"
+  },
+  {
+    "fipsCode": "30",
+    "stateName": "Montana",
+    "population": "704,494",
+    "lackingLiteracy": "9"
+  },
+  {
+    "fipsCode": "31",
+    "stateName": "Nebraska",
+    "population": "1,310,211",
+    "lackingLiteracy": "7"
+  },
+  {
+    "fipsCode": "32",
+    "stateName": "Nevada",
+    "population": "1,668,489",
+    "lackingLiteracy": "16"
+  },
+  {
+    "fipsCode": "33",
+    "stateName": "New Hampshire",
+    "population": "995,072",
+    "lackingLiteracy": "6"
+  },
+  {
+    "fipsCode": "34",
+    "stateName": "New Jersey",
+    "population": "6,610,051",
+    "lackingLiteracy": "17"
+  },
+  {
+    "fipsCode": "35",
+    "stateName": "New Mexico",
+    "population": "1,394,621",
+    "lackingLiteracy": "16"
+  },
+  {
+    "fipsCode": "36",
+    "stateName": "New York",
+    "population": "15,058,111",
+    "lackingLiteracy": "22"
+  },
+  {
+    "fipsCode": "37",
+    "stateName": "North Carolina",
+    "population": "6,278,385",
+    "lackingLiteracy": "14"
+  },
+  {
+    "fipsCode": "38",
+    "stateName": "North Dakota",
+    "population": "489,045",
+    "lackingLiteracy": "6"
+  },
+  {
+    "fipsCode": "39",
+    "stateName": "Ohio",
+    "population": "8,715,916",
+    "lackingLiteracy": "9"
+  },
+  {
+    "fipsCode": "40",
+    "stateName": "Oklahoma",
+    "population": "2,696,155",
+    "lackingLiteracy": "12"
+  },
+  {
+    "fipsCode": "41",
+    "stateName": "Oregon",
+    "population": "2,713,872",
+    "lackingLiteracy": "10"
+  },
+  {
+    "fipsCode": "42",
+    "stateName": "Pennsylvania",
+    "population": "9,561,844",
+    "lackingLiteracy": "13"
+  },
+  {
+    "fipsCode": "44",
+    "stateName": "Rhode Island",
+    "population": "832,138",
+    "lackingLiteracy": "8"
+  },
+  {
+    "fipsCode": "45",
+    "stateName": "South Carolina",
+    "population": "3,098,822",
+    "lackingLiteracy": "15"
+  },
+  {
+    "fipsCode": "46",
+    "stateName": "South Dakota",
+    "population": "572,209",
+    "lackingLiteracy": "7"
+  },
+  {
+    "fipsCode": "47",
+    "stateName": "Tennessee",
+    "population": "4,439,666",
+    "lackingLiteracy": "13"
+  },
+  {
+    "fipsCode": "48",
+    "stateName": "Texas",
+    "population": "15,936,279",
+    "lackingLiteracy": "19"
+  },
+  {
+    "fipsCode": "49",
+    "stateName": "Utah",
+    "population": "1,638,079",
+    "lackingLiteracy": "9"
+  },
+  {
+    "fipsCode": "50",
+    "stateName": "Vermont",
+    "population": "485,416",
+    "lackingLiteracy": "7"
+  },
+  {
+    "fipsCode": "51",
+    "stateName": "Virginia",
+    "population": "5,522,625",
+    "lackingLiteracy": "12"
+  },
+  {
+    "fipsCode": "53",
+    "stateName": "Washington State",
+    "population": "4,641,680",
+    "lackingLiteracy": "10"
+  },
+  {
+    "fipsCode": "54",
+    "stateName": "West Virginia",
+    "population": "1,418,672",
+    "lackingLiteracy": "13"
+  },
+  {
+    "fipsCode": "55",
+    "stateName": "Wisconsin",
+    "population": "4,185,290",
+    "lackingLiteracy": "7"
+  },
+  {
+    "fipsCode": "56",
+    "stateName": "Wyoming",
+    "population": "382,009",
+    "lackingLiteracy": "9"
+  }
+]

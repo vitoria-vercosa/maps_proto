@@ -9,7 +9,7 @@ export function ControlBar(props) {
                 <strong>Control Maps</strong>
             </header>
             <ControlBingBoundaries setLocalBoundary={props.setLocalBoundary} />
-            <ControlBingContourLayer />
+            <ControlBingContourLayer setVisibleContourLayer={props.setVisibleContourLayer}/>
             <footer>
 
             </footer>

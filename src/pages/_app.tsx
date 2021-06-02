@@ -9,15 +9,16 @@ import { useState, useEffect } from 'react'
 function MyApp({ Component, pageProps }) {
 
   const [ localBoundary, setLocalBoundary ] = useState('');
+  const [ visibleContourLayer, setVisibleContourLayer ] = useState(false);
 
   return (
     <div className={styles.wrapper}>
       <main>
         <Header />
         <Component {...pageProps} />
-        <MapZone localBoundary={localBoundary}/>
+        <MapZone localBoundary={localBoundary} visibleContourLayer={visibleContourLayer}/>
       </main>
-      <ControlBar setLocalBoundary={setLocalBoundary} />
+      <ControlBar setLocalBoundary={setLocalBoundary} setVisibleContourLayer={setVisibleContourLayer} />
     </div>
   )
 }
