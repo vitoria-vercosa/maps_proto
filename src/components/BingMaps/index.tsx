@@ -313,10 +313,12 @@ export function BingMaps(props){
                                 console.log('info ', info[0]);
 
                                 var polygon = data.results[0].Polygons;
-                                console.log('polygons ',typeof(polygon));
+                                console.log('polygons ',polygon);
+                                // data.results[0].Polygons.setOptions({fillcolor: '#84D361', strokeColor: 'black'});
                                 for (var i = 0; i < data.results[0].Polygons.length; i++) {
-                                    data.results[0].Polygons.setOptions({
-                                            fillColor: getLegendColor(parseInt(info['lackingLiteracy'])),
+                                    // console.log("info do polygon", info[0]);
+                                    data.results[0].Polygons[i].setOptions({
+                                            fillColor: getLegendColor(parseInt(info[0]['lackingLiteracy'])),//'#84D361',
                                             strokeColor: 'black'
                                     })
                                 }
