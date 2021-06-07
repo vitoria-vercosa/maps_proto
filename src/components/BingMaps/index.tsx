@@ -291,6 +291,18 @@ export function BingMaps(props){
                 states.push(dict['stateName']);
             });
 
+            const calcMiddlePoint = (polygon) => {
+                var lat_ = 0;
+                var lon_ = 0;
+
+                polygon.forEach(element => {
+                    lat_ = lat_ + element["latitude"]
+                    lon_ = lon_ + element["longitude"]
+                });
+
+                return [lat_/polygon.length, lon_/polygon.length]
+            }
+
             var geoDataRequestOptions = {
                 entityType: 'AdminDivision1',
                 getAllPolygons: true
@@ -313,16 +325,51 @@ export function BingMaps(props){
                                 console.log('info ', info[0]);
 
                                 var polygon = data.results[0].Polygons;
-                                console.log('polygons ',polygon);
+                                console.log('polygons ',polygon[0]["geometry"]["boundingBox"]["center"]);
+
+                                var middle = [];
+                                
+                                var infobox = new Microsoft.Maps.Infobox( [polygon[0]["geometry"]["boundingBox"]["center"]["latitude"], polygon[0]["geometry"]["boundingBox"]["center"]["longitude"]], {
+                                    title: info[0].stateName,
+                                    description: "Lacking Literacy : " + info[0].lackingLiteracy
+                                });
+
                                 // data.results[0].Polygons.setOptions({fillcolor: '#84D361', strokeColor: 'black'});
                                 for (var i = 0; i < data.results[0].Polygons.length; i++) {
-                                    // console.log("info do polygon", info[0]);
+                                    // console.log("location ", data.results[0].Polygons[i].getLocations());
+
+                                    middle= calcMiddlePoint(data.results[0].Polygons[i].getLocations());
+
+
                                     data.results[0].Polygons[i].setOptions({
                                             fillColor: getLegendColor(parseInt(info[0]['lackingLiteracy'])),//'#84D361',
                                             strokeColor: 'black'
                                     })
+                                    
+                                    
                                 }
-                                map.entities.push(data.results[0].Polygons);
+                                // Microsoft.Maps.Events.addHandler(data.results[0].Polygons[i], 'click', () => {infobox.setOptions({visible: true})});
+                                
+                                {
+                                    /*
+                                    // var pin = new Microsoft.Maps.Pushpin(randomLocations[i]);
+                                    
+                                    // //Store some metadata with the pushpin.
+                                    // pin.metadata = {
+                                        //     title: 'Pin ' + i,
+                                        //     description: 'Discription for pin' + i
+                                        // };
+                                        
+                                        // //Add a click event handler to the pushpin.
+                                        // Microsoft.Maps.Events.addHandler(pin, 'click', pushpinClicked);
+                                        
+                                        // //Add pushpin to the map.
+                                        // map.entities.push(pin);
+                                        */
+                                    }
+                                    
+                                    map.entities.push(data.results[0].Polygons);
+                                    // infobox.setMap(map);
                             }
                         },
                         null,
@@ -334,6 +381,23 @@ export function BingMaps(props){
                     );
                 }
             );
+
+            function displayInfobox(e, infobox) {
+                var data = e.target.metadata;
+        
+                var description = ['<table><tr><td><b>Fruit</b></td><td><b>Value</b></td></tr>'];
+        
+                    
+                description.push('</table>');
+        
+                infobox.setOptions({
+                    location: e.target.getLocation(),
+                    title: data.name,
+                    description: description.join(''),
+        
+                    visible: true
+                })
+            }
 
             const getLegendColor = (val) => {
                 if(val >= 20){
@@ -352,9 +416,9 @@ export function BingMaps(props){
 
         }
 
-        // if (props.localBoundary){
-        //     searchAndLoadGeometry();
-        // }
+        if (props.localBoundary){
+            searchAndLoadGeometry();
+        }
         if (props.visibleContourLayer){
             loadContour();
             // objLayers['layer_Contour'].setVisible(false);
