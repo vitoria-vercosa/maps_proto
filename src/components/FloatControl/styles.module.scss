@@ -1,0 +1,98 @@
+.ControlContainer{
+
+    // width:24rem;
+    // // height:100px;
+    // position:absolute;
+    // z-index:100;
+
+    // top:20%;
+    // left:10rem;
+
+    background: #FFFFFF;
+    border-left: 5px solid #0076CE;
+    box-shadow: 0.2rem 0.2rem 0.5rem #808080;       // box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];
+
+    padding: 1rem;
+
+    font-size: 0.9rem;
+    color: #000000;
+
+    .topCollapse{
+        display: flex;
+
+        img{
+            padding: 0 0.5rem 0 0.5rem;
+        }
+
+        .alignRight{
+            margin-left: 3rem;
+        }
+    }
+    .sndTop{
+        margin:0.5rem 0 0 0;
+        border-top: 2px solid var(--gray-100);
+        padding-top: 1rem;
+    }
+
+    .contentControl {
+        display: flex;
+        flex-direction: column;
+        margin: 0.5rem 0.1rem 0 0.2rem;
+        // overflow: hidden;
+        // display:
+        // display: block;
+        // &:not(.show) {
+        //     display: none;
+        // }    
+        
+
+        span{
+            margin-bottom: 2rem;
+            padding: 0 0 2rem 0;
+            width: 21rem;
+        }
+        label {
+            display:block;
+            clear:left;
+            word-wrap:break-word;
+        }
+
+        .littleBox{
+            margin:0 0 1rem 0;
+            position: relative;
+            flex-direction: column;
+            flex-basis: 100%;
+
+            .inputWhere{
+                width: 21rem;
+                height: 2.3rem; 
+                font-size: 0.9rem;
+            }
+
+            select{
+                width: 21rem;
+                height: 2.3rem;
+                color: #0076CE;
+            }
+        }
+
+        .inputRadio{
+            box-sizing: border-box;
+            appearance: none;
+            background: white;
+            outline: 2px solid #333;
+            width: 0.8rem;
+            height: 0.8rem;
+        }
+        .inputRadio :checked{
+            background: #333;
+        }
+        .sndCheckbox{
+            margin:0 0 0 2rem;
+        }
+    }
+
+    .btnHidden{
+        display: none;
+    }
+}

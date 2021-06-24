@@ -1,0 +1,44 @@
+.ControlContainer{
+
+    width:24rem;
+    // height:100px;
+    position:absolute;
+    z-index:100;
+
+    background: #FFFFFF;
+    border-left: 5px solid #0076CE;
+    box-shadow: 0.2rem 0.2rem 0.5rem #808080;       // box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];
+
+    margin: 1.5rem 0 0 0;
+
+    padding: 1rem;
+
+    font-size: 0.9rem;
+    color: #000000;
+
+    .topCollapse{
+        display: flex;
+
+        img{
+            padding: 0 0.5rem 0 0.5rem;
+        }
+
+        .alignRight{
+            margin-left: 3rem;
+        }
+    }
+    .contentSubtitle{
+        height: 5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #collapseCttSubtitled{
+        height: 5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+}

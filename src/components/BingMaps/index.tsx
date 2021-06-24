@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { fadedMap, earthquakeData, US_State_Literacy } from './conf';
+import { fadedMap, blackWhiteMap, earthquakeData, US_State_Literacy } from './conf';
 import { loadBingApi, Microsoft } from './loaderBingMaps';
 // import { Search, getBoundary } from './BoundaryFunctions';
+import styles from './styles.module.scss';
 
 export function BingMaps(props){
 
@@ -12,75 +13,42 @@ export function BingMaps(props){
         // const map = new Microsoft.Maps.Map('#myMap', {mapTypeId: Microsoft.Maps.MapTypeId.grayscale})
         // return map.setOptions({ customMapStyle: fadedMap });
 
-        const map = new Microsoft.Maps.Map('#myMap', { customMapStyle: fadedMap });
+        const map = new Microsoft.Maps.Map('#myMap', { 
+            // customMapStyle: fadedMap, 
+            // customMapStyle: blackWhiteMap, 
+            mapTypeId: Microsoft.Maps.MapTypeId.canvasLight,
+            // center: new Microsoft.Maps.Location(0, 0),
+            // center: new Microsoft.Maps.Location(-3.71722, -38.54306),
+            // center: new Microsoft.Maps.Location(-3.7, -38),
+            zoom: 3 
+        });
+
+        const dataLayer = new Microsoft.Maps.EntityCollection();
+        map.entities.push(dataLayer);
+        
+        const infoboxLayer = new Microsoft.Maps.EntityCollection();
+        map.entities.push(infoboxLayer);
 
         var objLayers = {
             'layer_Boundary' : new Microsoft.Maps.Layer(),
             'layer_Choropleth' : new Microsoft.Maps.Layer(),
+            'layer_infobox': new Microsoft.Maps.Layer()
         }
 
-        const searchBoundariesAndLoadChoropleth = () => {
+        // how to use a layer
+        {
+            /*
+                //Create a layer.
+                var layer = new Microsoft.Maps.Layer();
 
-            //Create the request options.
-            var geoDataRequestOptions = {
-                entityType: 'AdminDivision1',
-                getAllPolygons: true
-            };
+                //Add some data to it.
+                layer.add(Microsoft.Maps.TestDataGenerator.getPushpins(5, map.getBounds()));
+                layer.add(Microsoft.Maps.TestDataGenerator.getPolygons(2, map.getBounds()));
+                layer.add(Microsoft.Maps.TestDataGenerator.getPolylines(2, map.getBounds()));
 
-            var states = [];
-            US_State_Literacy.forEach(function(dict, i) {
-                states.push(dict['stateName']);
-            })
-            
-            Microsoft.Maps.loadModule(
-                ['Microsoft.Maps.SpatialDataService', 'Microsoft.Maps.Search'],
-                function () {
-                    var searchManager = new Microsoft.Maps.Search.SearchManager(map);
-                    var geocodeRequest = {
-                        where: props.localBoundary,
-                        // callback: getBoundary,
-                    };
-                    searchManager.geocode(geocodeRequest);
-                }
-            );
-
-            //Use the GeoData API manager to get the state boundaries.
-            Microsoft.Maps.SpatialDataService.GeoDataAPIManager.getBoundary(
-                states,
-                geoDataRequestOptions,
-                map,
-                function (data) {
-                    //This callback function will be called once for each state.
-                    //Add the polygons to the map.
-                    if (data.results && data.results.length > 0) {
-                        var info = US_State_Literacy[data.location];
-
-                        for (var i = 0; i < data.results[0].Polygons.length; i++) {
-                            data.results[0].Polygons[i].setOptions({
-                                fillColor: getLegendColor(parseInt(info.lackingLiteracy)),
-                                strokeColor: 'black'
-                            });
-                        }
-
-                        map.entities.push(data.results[0].Polygons);
-                    }
-                }
-            );
-
-            const getLegendColor = (val) => {
-                if(val >= 20){
-                    return 'rgba(189,0,38,0.8)';
-                }else if(val >= 15){
-                    return 'rgba(227,26,28,0.8)';
-                }else if(val >= 10){
-                    return 'rgba(253,141,60,0.8)';
-                }else if(val >= 5){
-                    return 'rgba(254,217,118,0.8)';
-                }else {
-                    return 'rgba(255,255,204,0.8)';
-                }
-            }
-            
+                //Add layer to map.
+                map.layers.insert(layer);
+            */
         }
 
         const searchAndLoadGeometry = () => {
@@ -104,7 +72,9 @@ export function BingMaps(props){
                     
                     //Zoom into the location.
                     map.setView({ bounds: geocodeResult.results[0].bestView });
-    
+
+                    // doc GeoDataRequestOptions 
+                    {
                     //Create the request options for the GeoData API.
                     //
                     // lod : The level of detail for the boundary polygons returned. 
@@ -120,9 +90,11 @@ export function BingMaps(props){
                     //
                     // entityType :	The entity type to return. Default: CountryRegion
                     //
+                    }
                     var geoDataRequestOptions = {
                         lod : 1, 
-                        getAllPolygons: true
+                        getAllPolygons: true,
+                        // entityType: "PopulatedPlace"
                     };
     
                     //Verify that the geocoded location has a supported entity type.
@@ -145,6 +117,7 @@ export function BingMaps(props){
                             return;
                     }
                     
+                    /*
                     //Use the GeoData API manager to get the boundary of the zip codes
                     Microsoft.Maps.SpatialDataService.GeoDataAPIManager.getBoundary(
                         geocodeResult.results[0].location,
@@ -164,6 +137,7 @@ export function BingMaps(props){
                             console.log(statusMessage);
                         }
                     );
+                    */
                 }
                 
             }
@@ -210,78 +184,7 @@ export function BingMaps(props){
         
         }
 
-        const testSDK = () => {
-
-            var heatGradientData;
-            var maxPopulation: number = 10000000;
-
-            Microsoft.Maps.loadModule(
-                'Microsoft.Maps.SpatialDataService',
-                () => {
-                    var worldBounds = Microsoft.Maps.LocationRect.fromEdges(90, -180, -90, 180);
-                    //Get all states by doing an intersection test against a bounding box of the world and have up to 52 results returned.
-                    var queryOptions = {
-                        queryUrl: 'https://spatial.virtualearth.net/REST/v1/data/755aa60032b24cb1bfb54e8a6d59c229/USCensus2010_States/States',
-                        spatialFilter: {
-                            spatialFilterType: 'intersects',
-                            intersects: worldBounds
-                        },
-                        top: 52
-                    };
-                    console.log("queryOptions => ", queryOptions);
-                    Microsoft.Maps.SpatialDataService.QueryAPIManager.search(
-                        queryOptions,
-                        map,
-                        (data) => {
-                            //Loop through results and set the fill color of the polygons based on the population property.
-                            for (var i = 0; i < data.length; i++) {
-                                data[i].setOptions({
-                                    fillColor: '#84D361'//getLegendColor(data[i].metadata.Population, maxPopulation)
-                                });
-                                //Add a click event to each polygon and display metadata.
-                                Microsoft.Maps.Events.addHandler(data[i], 'click', function (e) {
-                                    alert(e.target.metadata.Name + '\r\nPopulation: ' + e.target.metadata.Population);
-                                });
-                            }
-                            //Add results to the map.
-                            map.entities.push(data);
-                        }
-                    );
-                }
-            );
-
-            // function createLegend(maxValue) {
-            //     var canvas = document.getElementById('legendCanvas');
-            //     var ctx = canvas.getContext('2d');
-            //     //Create a linear gradient for the legend.
-            //     var colorGradient = {
-            //         '0.00': 'rgba(0,255,0,255)',    // Green
-            //         '0.50': 'rgba(255,255,0,255)',  // Yellow
-            //         '1.00': 'rgba(255,0,0,255)'     // Red
-            //     };
-            //     var grd = ctx.createLinearGradient(0, 0, 256, 0);
-            //     for (var c in colorGradient) {
-            //         grd.addColorStop(c, colorGradient[c]);
-            //     }
-            //     ctx.fillStyle = grd;
-            //     ctx.fillRect(0, 0, canvas.width, canvas.height);
-            //     //Store the pixel information from the legend.
-            //     heatGradientData = ctx.getImageData(0, 0, canvas.width, 1);
-            // }
-            function getLegendColor(value, maxValue): string {
-                value = (value > maxValue) ? maxValue : value;
-                //Calculate the pixel data index from the ratio of value/maxValue.
-                var idx = Math.round((value / maxValue) * 256) * 4 - 4;
-                if (idx < 0) {
-                    idx = 0;
-                }
-                //Create an RGBA color from the pixel data at the calculated index.
-                return 'rgba(' + heatGradientData.data[idx] + ',' + heatGradientData.data[idx + 1] + ',' + heatGradientData.data[idx + 2] + ',' + '0.5)';
-            }
-            
-        }
-
-        const plotStates = () => {
+        const plotChoropleth = () => {
 
             //Create an array of locations to get the boundaries of
             var zipCodes = ['98116', '98136', '98106', '98126', '98108', '98118'];
@@ -291,22 +194,59 @@ export function BingMaps(props){
                 states.push(dict['stateName']);
             });
 
-            const calcMiddlePoint = (polygon) => {
-                var lat_ = 0;
-                var lon_ = 0;
-
-                polygon.forEach(element => {
-                    lat_ = lat_ + element["latitude"]
-                    lon_ = lon_ + element["longitude"]
-                });
-
-                return [lat_/polygon.length, lon_/polygon.length]
-            }
+            var infobox = new Microsoft.Maps.Infobox(
+                new Microsoft.Maps.Location(0,0), 
+                {visible: false}
+            );
+            
+            // infoboxLayer.push(infobox);
+            objLayers.layer_infobox.add(infobox);
+            map.layers.insert(objLayers.layer_infobox);
 
             var geoDataRequestOptions = {
                 entityType: 'AdminDivision1',
                 getAllPolygons: true
             };
+
+            const displayInfobox = (e) => {
+                if (e.target){
+                    var point = new Microsoft.Maps.Point(e.getX(), e.getY());
+
+                    console.log("O LOCAL QUE EU CLIQUEI ", [e.getX(),e.getY()]);
+                    var loc = map.tryPixelToLocation(point);
+
+                    infobox.setLocation(loc);
+
+                    var opt = e.target.metadata;
+
+                    if(opt){
+
+                        // if(e.target.getIcon){ //is pushpin
+                        //     opt.offset = new Microsoft.Maps.Point(0,20);
+                        // }else{
+                        //     opt.offset = new Microsoft.Maps.Point(0,0);
+                        // }
+
+                        opt.visible = true;
+                        infobox.setOptions(opt);
+                    }
+                }
+            }
+
+            const createLegend = () => {
+                //Create HTML for legend
+                var legendHtml = [],
+                    max = 20,
+                    increment = 5;
+        
+                for (var i = max; i >= 0; i -= increment) {
+                    legendHtml.push('<svg width="12" height="12"><rect width="12" height="12" style="fill:');
+                    legendHtml.push(getLegendColor(i), '"></rect></svg> ');
+                    legendHtml.push((i == max) ? i + '+' : i + '-' + (i + increment), '<br/>');
+                }
+        
+                document.getElementById('legend').innerHTML = legendHtml.join('');
+            }
             
             Microsoft.Maps.loadModule(
                 'Microsoft.Maps.SpatialDataService',
@@ -322,54 +262,56 @@ export function BingMaps(props){
                                 var info = US_State_Literacy.filter( obj => {
                                     return obj["stateName"] === data["location"]
                                 })
-                                console.log('info ', info[0]);
+                                // console.log('info ', info[0]);
 
                                 var polygon = data.results[0].Polygons;
-                                console.log('polygons ',polygon[0]["geometry"]["boundingBox"]["center"]);
+                                // console.log('polygons ',polygon[0]["geometry"]["boundingBox"]["center"]);
 
-                                var middle = [];
-                                
-                                var infobox = new Microsoft.Maps.Infobox( [polygon[0]["geometry"]["boundingBox"]["center"]["latitude"], polygon[0]["geometry"]["boundingBox"]["center"]["longitude"]], {
+                                polygon.metadata = {
                                     title: info[0].stateName,
                                     description: "Lacking Literacy : " + info[0].lackingLiteracy
-                                });
+                                }
 
                                 // data.results[0].Polygons.setOptions({fillcolor: '#84D361', strokeColor: 'black'});
                                 for (var i = 0; i < data.results[0].Polygons.length; i++) {
                                     // console.log("location ", data.results[0].Polygons[i].getLocations());
-
-                                    middle= calcMiddlePoint(data.results[0].Polygons[i].getLocations());
-
+                                    // middle= calcMiddlePoint(data.results[0].Polygons[i].getLocations());
 
                                     data.results[0].Polygons[i].setOptions({
                                             fillColor: getLegendColor(parseInt(info[0]['lackingLiteracy'])),//'#84D361',
                                             strokeColor: 'black'
                                     })
                                     
-                                    
                                 }
-                                // Microsoft.Maps.Events.addHandler(data.results[0].Polygons[i], 'click', () => {infobox.setOptions({visible: true})});
-                                
-                                {
-                                    /*
-                                    // var pin = new Microsoft.Maps.Pushpin(randomLocations[i]);
-                                    
-                                    // //Store some metadata with the pushpin.
-                                    // pin.metadata = {
-                                        //     title: 'Pin ' + i,
-                                        //     description: 'Discription for pin' + i
-                                        // };
-                                        
-                                        // //Add a click event handler to the pushpin.
-                                        // Microsoft.Maps.Events.addHandler(pin, 'click', pushpinClicked);
-                                        
-                                        // //Add pushpin to the map.
-                                        // map.entities.push(pin);
-                                        */
+
+                                // dataLayer.push(polygon)
+                                objLayers.layer_Choropleth.add(polygon);
+                                map.layers.insert(objLayers.layer_Choropleth);
+
+                                                                
+                                // Microsoft.Maps.Events.addHandler(data.results[0].Polygons, 'click', displayInfobox);
+                                // Microsoft.Maps.Events.addHandler(polygon, 'click', () => {alert("OTARIA")});
+
+                                {/*
+                                const pushPolygonClicked = (e) => {
+                                    //Make sure the infobox has metadata to display.
+                                    if (e.target.metadata) {
+                                        //Set the infobox options with the metadata of the pushpin.
+                                        infobox.setOptions({
+                                            location: e.target.getLocation(),
+                                            title: e.target.metadata.title,
+                                            description: e.target.metadata.description,
+                                            visible: true
+                                        });
                                     }
+                                }
+
+                                // Microsoft.Maps.Events.addHandler(polygon, 'click', pushPolygonClicked);
                                     
-                                    map.entities.push(data.results[0].Polygons);
+                                // map.entities.push(data.results[0].Polygons);
+                                // map.entities.push(polygon);
                                     // infobox.setMap(map);
+                                */}
                             }
                         },
                         null,
@@ -382,41 +324,25 @@ export function BingMaps(props){
                 }
             );
 
-            function displayInfobox(e, infobox) {
-                var data = e.target.metadata;
-        
-                var description = ['<table><tr><td><b>Fruit</b></td><td><b>Value</b></td></tr>'];
-        
-                    
-                description.push('</table>');
-        
-                infobox.setOptions({
-                    location: e.target.getLocation(),
-                    title: data.name,
-                    description: description.join(''),
-        
-                    visible: true
-                })
-            }
-
             const getLegendColor = (val) => {
                 if(val >= 20){
-                    return 'rgba(189,0,38,0.8)';
+                    return 'rgba(189,0,38,0.6)';
                 }else if(val >= 15){
-                    return 'rgba(227,26,28,0.8)';
+                    return 'rgba(227,26,28,0.6)';
                 }else if(val >= 10){
-                    return 'rgba(253,141,60,0.8)';
+                    return 'rgba(253,141,60,0.6)';
                 }else if(val >= 5){
-                    return 'rgba(254,217,118,0.8)';
+                    return 'rgba(254,217,118,0.6)';
                 }else {
-                    return 'rgba(255,255,204,0.8)';
+                    return 'rgba(255,255,204,0.6)';
                 }
             }
-  
+
+            // createLegend();
 
         }
 
-        if (props.localBoundary){
+        if (props.localBoundary != ''){
             searchAndLoadGeometry();
         }
         if (props.visibleContourLayer){
@@ -424,25 +350,22 @@ export function BingMaps(props){
             // objLayers['layer_Contour'].setVisible(false);
 
         }
-        plotStates();
+        // plotChoropleth();
         // searchBoundariesAndLoadChoropleth();
 
         return map;
     }
 
     useEffect( () => {
-        console.log("from bingmaps ",props.visibleContourLayer)
         loadBingApi("AjMWCAtX2R3I4Pk26FRpsm6_SALJxWdGOjIy80CG0uSPdkpzbp3ps9wD6MZ_Hdh7").then( () => {
             initMap();
-
-            console.log("Microsoft = ", Microsoft)
         })
 
     });
 
 
     return (
-        <div id="myMap"></div>
+            <div id="myMap" className={styles.mapContainer}></div>
     )
     
 }

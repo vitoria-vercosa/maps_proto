@@ -1,10 +1,14 @@
 import '../styles/global.scss'
 import styles from '../styles/app.module.scss';
 
+// import { MapZone } from '../components/MapZone';
+// import { ControlBar } from '../components/ControlBar';
+
 import { Header } from "../components/Header";
-import { MapZone } from '../components/MapZone';
-import { ControlBar } from '../components/ControlBar';
-import { useState, useEffect } from 'react'
+import { BingMaps } from '../components/BingMaps';
+import React, { useState, useEffect } from 'react'
+import { FloatControl } from '../components/FloatControl';
+import { FloatSubtitle } from '../components/FloatSubtitle';
 
 function MyApp({ Component, pageProps }) {
 
@@ -13,12 +17,22 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <div className={styles.wrapper}>
+
       <main>
         <Header />
         <Component {...pageProps} />
-        <MapZone localBoundary={localBoundary} visibleContourLayer={visibleContourLayer}/>
+        {/* <MapZone localBoundary={localBoundary} visibleContourLayer={visibleContourLayer}/> */}
+        <BingMaps localBoundary={localBoundary} visibleContourLayer={visibleContourLayer}/>
       </main>
-      <ControlBar setLocalBoundary={setLocalBoundary} setVisibleContourLayer={setVisibleContourLayer} />
+
+      <div className={styles.floatPainel}>
+
+        <FloatControl setLocalBoundary={setLocalBoundary}/>
+        <FloatSubtitle></FloatSubtitle>
+
+      </div>
+      {/* <ControlBar setLocalBoundary={setLocalBoundary} setVisibleContourLayer={setVisibleContourLayer} /> */}
+
     </div>
   )
 }

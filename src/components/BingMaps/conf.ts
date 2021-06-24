@@ -36,7 +36,49 @@ export var fadedMap = {
         "shadedReliefVisible": false
     }
 };
-
+export var blackWhiteMap = {
+    "version": "1.0",
+    "elements": {
+        "vegetation": {
+            "visible":false
+            // "fillColor": "#c5dea2"
+        },
+        "naturalPoint": {
+            "visible": false,
+            "labelVisible": false
+        },
+        "transportation": {
+            "labelOutlineColor": "#ffffff",
+            "fillColor": "#ffffff",
+            // "fillColor": "#000000",
+            // "strokeColor": "#d7d6d5"
+            "strokeColor": "#FFFFFF"
+        },
+        "water": {
+            // "fillColor": "#b1bdd6",
+            // "labelColor": "#ffffff",
+            "fillColor":"#FFFFFF",
+            // "labelOutlineColor": "#9aa9ca"
+            "labelOutlineColor": "#FFFFFF"
+        },
+        "structure": {
+            "fillColor":"#FFFFFF"
+            // "fillColor": "#d7d6d5"
+        },
+        "indigenousPeoplesReserve": {
+            "visible": false
+        },
+        "military": {
+            "visible": false
+        }
+    },
+    "settings": {
+        // "landColor": "#e7e6e5",
+        "landColor": "#000000",
+        "shadedReliefVisible": false
+    }
+};
+// Earthquake intensity contours of M7.0 – 1km WSW (oés-sudoeste) of Kumamoto-shi, Japan.
 export var earthquakeData = {
     'type': 'FeatureCollection',
     'bbox': [127.75430000000000, 30.26760000000000, 133.75430000000000, 35.31360000000000],
@@ -83,6 +125,7 @@ export var earthquakeData = {
     }]
 }
 
+// The literacy rate is the total number of literate persons (people able to both read and write)
 export var US_State_Literacy = [
     {
         "fipsCode": "1",
