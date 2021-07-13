@@ -27,8 +27,9 @@ interface IpropsTable {
 export function TableFromScratch (props : IpropsTable) {
 
     const [ currentPage , setCurrentPage ] = useState<number>(1);
+    const [ currentData, setCurrentData ] = useState<any[]>(props.data);
     const [ currentSizePage , setCurrentSizePage ] = useState<number>(5);
-    const [ currentData, setCurrentData ] = useState<any[]>(props.data)
+    const [ currentRangeRecords, setCurrentRangeRecords ] = useState<Array<number>>([0,5]);
     const [ orderTable, setOrderTable ] = useState<object>({'column':'contry', 'asc': true});
 
     useEffect(()=> {
@@ -51,7 +52,7 @@ export function TableFromScratch (props : IpropsTable) {
 
     }, [currentData, orderTable]);
 
-    const data = coverage_brasil;
+    // const data = coverage_brasil;
 
     const handleOrder = (column: string, asc: boolean) => {
 
@@ -107,27 +108,25 @@ export function TableFromScratch (props : IpropsTable) {
         )
 
     }
-    const sortObjects = (data, column, asc) =>{
+    // const sortObjects = (data, column, asc) =>{
 
-        if (asc == true){
-            setCurrentData(
-            //props.modifyData(
-                data.sort(function (a, b) {
-                    return (a[column] > b[column]) ? 1 : ((b[column] > a[column]) ? -1 : 0);
-                })
-            )
-        }else{
-            setCurrentData(
-            //props.modifyData( 
-                data.sort(function (a, b) {
-                    return (a[column] < b[column]) ? 1 : ((b[column] < a[column]) ? -1 : 0);
-                })
-            )               
-        }
-        // console.log('newData ', currentData);
-        // useForceUpdate();
-        // window.location.reload();
-    }
+    //     if (asc == true){
+    //         setCurrentData(
+    //         //props.modifyData(
+    //             data.sort(function (a, b) {
+    //                 return (a[column] > b[column]) ? 1 : ((b[column] > a[column]) ? -1 : 0);
+    //             })
+    //         )
+    //     }else{
+    //         setCurrentData(
+    //         //props.modifyData( 
+    //             data.sort(function (a, b) {
+    //                 return (a[column] < b[column]) ? 1 : ((b[column] < a[column]) ? -1 : 0);
+    //             })
+    //         )               
+    //     }
+
+    // }
 
 
     return (
@@ -142,47 +141,18 @@ export function TableFromScratch (props : IpropsTable) {
                 </thead>
                 <tbody>
                     { 
-                        currentData.slice(0, currentSizePage).map( buildRow )    
-                        // (() => {
-                        //     for(var i=0; i<currentSizePage; i++){
-                        //         console.log(currentData[i])
-                        //         // buildRow(currentData[i])
-                        //     }
-                        // }  )      
+                        // currentData.slice(0, currentSizePage).map( buildRow )       
+                        currentData.slice(currentRangeRecords[0], currentRangeRecords[1]).map( buildRow )       
                     }
                 </tbody>
             </table>
 
-            <Pagination changePage={setCurrentPage} changeSizePerPage={setCurrentSizePage}></Pagination>
-
-            {/* <div className={styles.pagination}>
-
-                <button type="submit" className={styles.passPage}>
-                    <img src="./dds_chevron-up.svg" className={styles.btnPassPrevious}/> Previous
-                </button>
-
-                <div className={styles.paginationCenter}>
-                    <p>Page</p>
-                    <input type='text' className={styles.inputNumPage} defaultValue='1'/>
-                    <p>of 2</p>
-                </div>
-
-                <div className={styles.sizePerPage}>
-                    <select id='sizePerPage' defaultValue='5'>
-                        <option value='5'>5</option>
-                        <option value='10'>10</option>
-                        <option value='15'>15</option>
-                        <option value='20'>20</option>
-                    </select>
-                    <p>Itens per page</p>
-                </div>
-
-                <button type="submit" className={cx(styles.passPage, styles.btnRight)}>
-                    Next
-                    <img src="./dds_chevron-up.svg" className={styles.btnPassNext} /> 
-                </button>
-
-            </div> */}
+            <Pagination 
+                totalRegisters={currentData.length}
+                changePage={setCurrentPage} 
+                changeSizePerPage={setCurrentSizePage} 
+                changeRangeRecords={setCurrentRangeRecords}
+            ></Pagination>
 
         </div>
     )
