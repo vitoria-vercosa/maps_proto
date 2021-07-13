@@ -1,0 +1,27 @@
+.viewTable{
+    width: 8rem ;
+    height: 2.5rem;
+
+    background-color: white;
+    box-shadow: 0 0.1rem 0.5rem #808080;
+    font-size: 0.9rem;
+    display: flex;
+
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+
+    .arrow {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    p{
+        color: var(--gray-800);
+        padding: 0 0 0 0.5rem;
+    }
+
+}

@@ -1,0 +1,54 @@
+.pagination {
+    padding: 0.5rem;
+    color: black;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 1.5rem 0 0 0;
+
+    .passPage{
+        background-color: #EEEEEE;
+        color: var(--blue-dds-600);
+        padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+        justify-content: center;
+        align-self: center;
+
+        .btnPassPrevious{
+            transform: rotate(90deg);
+        }
+        .btnPassNext{
+            transform: rotate(270deg);
+        }
+    }
+    .paginationCenter{
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // position: 50% 50%;
+        margin-left: 21rem;
+        margin-right: 9rem;
+
+        .inputNumPage{
+            width: 2.5rem;
+            height: 2rem;
+            margin: 0 0.5rem 0 0.5rem;
+            text-align: center ;
+        }
+    }
+
+    .sizePerPage{
+        select {
+            margin-right: 1rem;
+            width: 2.5rem;
+            height: 2rem;
+        }
+        display: flex;
+        align-content: center;
+        // align-items: stretch;
+        margin-right: 2rem;
+        align-items: center;
+        justify-content: center;    
+    }
+   
+}

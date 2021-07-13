@@ -61,7 +61,7 @@ export function FloatControl(props) {
                 
                 <div className={styles.littleBox}>
                     <span>Where</span> 
-                    <form>
+                    <form >
                     <input id="text"
                             type="text" 
                             className={styles.inputWhere} 
@@ -76,15 +76,15 @@ export function FloatControl(props) {
                 <form name="rest" id="rest" className="forms">
                     <div className={styles.littleBox}>
                         <span>Line of Business</span><br/>
-                        <select disabled={formsFlag}>
-                            <option>Select LOB</option>
+                        <select disabled={formsFlag} defaultValue='select' >
+                            <option value='select' disabled >Select LOB</option>
                         </select>
                     </div>
 
                     <div className={styles.littleBox}>
                         <span>Combined Service Type</span><br/>
-                        <select disabled={formsFlag}>
-                            <option>Select Service Type</option>
+                        <select disabled={formsFlag} defaultValue='select'>
+                            <option disabled value='select'>Select Service Type</option>
                         </select>
                     </div>
                     <div className={styles.radioGroup}>
@@ -105,20 +105,49 @@ export function FloatControl(props) {
                 <form className="forms">
                     <div className={styles.littleBox}>
                         <span>Service Level</span><br/>
-                        <select disabled={formsFlag}>
-                            <option>Select Service Level</option>
+                        <select disabled={formsFlag} defaultValue='select'>
+                            <option className={styles.optionDisabled} disabled value='select'>Select Service Level</option>
+                            <option>2 HOURS</option>
+                            <option>4 HOURS</option>
+                            <option>BEST EFFORT</option>
+                            <option>REMOTE EFFORT</option>
+                            <option>NEXT BUSINESS DAY</option>
+                        </select>
+                    </div>
+                    <div className={styles.littleBox}>
+                        <span>Period</span><br/>
+                        <select disabled={formsFlag} defaultValue='select'>
+                            <option className={styles.optionDisabled} disabled value='select'>Select Period</option>
+                            <option>24 Hour a Day 7 Days per Week</option>
+                            <option>12 Hour a Day 7 Days pre Week</option>
+                            <option>11 Hour a Day 7 Days pre Week</option>
+                            <option>12 Hour a Day 6 Days pre Week</option>
+                            <option>8 Hour a Day 6 Days pre Week</option>
                         </select>
                     </div>
                     <div className={styles.littleBox}>
                         <span>Service Type</span><br/>
-                        <select disabled={formsFlag}>
-                            <option>Select Service Type</option>
+                        <select disabled={formsFlag} defaultValue='select'>
+                            <option className={styles.optionDisabled} disabled value='select'>Select Service Type</option>
+                            <option>INSTALL</option>
+                            <option>DEPLOYMENT</option>
+                            <option>LABOR</option>
+                            <option>PARTS</option>
+                            <option>LOGISTICS PARTS ONLY</option>
                         </select>
                     </div>
                     <div className={styles.littleBox}>
                         <span>Provider</span><br/>
-                        <select disabled={formsFlag}>
-                            <option>Select Provider</option>
+                        <select disabled={formsFlag} defaultValue='select'>
+                            <option className={styles.optionDisabled} disabled value='select'>Select Provider</option>
+                            <option>UNY</option>
+                            <option>VERS</option>
+                            <option>CONN</option>
+                            <option>IFOR</option>
+                            <option>DLC</option>
+                            <option>UPS</option>
+                            <option>POINT</option>
+                            <option>DELLBADGED</option>
                         </select>
                     </div>
                     <div className={styles.radioGroup}>

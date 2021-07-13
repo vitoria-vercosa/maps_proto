@@ -1,0 +1,42 @@
+.searchTable{
+
+    display: flex;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+
+    h1{
+        font-weight: normal;
+    }
+
+    .searchArea{
+
+        margin-left: 25rem;
+
+        .inputSearch{
+            // background: url('./../../../public/search.svg') no-repeat scroll 3px 3px;
+            background: url('./../../../public/search.svg') no-repeat scroll 2px 2px;
+            // background-position: right center;
+            background-position: 97% 50%;
+            padding-right:30px;
+            height: 2.3rem;
+
+            margin-right: 1rem;
+        
+            // border: 0.3rem 0.3rem 0.3rem var(--gray-200);
+        }
+        .downloadBtn{
+            // background-color: ;
+            background: var(--blue-dds-600) url(./../../../public/download_icon.svg) no-repeat scroll 2px 2px;
+            background-position:10% 50%;
+        
+            color: white;
+        
+            width: 9rem;
+            height: 2.3rem;
+            
+            align-content:flex-end;
+            // position: 60% 50%;
+        }
+
+    }
+}

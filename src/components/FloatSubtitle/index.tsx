@@ -22,10 +22,13 @@ export function FloatSubtitle() {
                 <h3>Subtitle</h3>
 
             </div>
-                <div id="collapseCttSubtitled" className={styles.contentSubtitle} 
+            <div id="collapseCttSubtitled">
+
+                <div  className={styles.contentSubtitle} 
                 style={{height: '5rem' , display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <p>Fill in the "where" field to start viewing</p>
                 </div>
+            </div>
 
         </div>
     )

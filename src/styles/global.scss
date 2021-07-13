@@ -19,6 +19,11 @@
     --purple-400: #9164FA;
     --purple-500: #8257E5;
     --purple-800: #6F48C9;
+
+    --blue-dds-100: #CCE5F1;
+    --blue-dds-500: #0076CE;
+    --blue-dds-600: #006BBD;
+    --blue-dds-800: #00447C;
 }
 
 @media (max-width: 1080px) {
@@ -33,7 +38,8 @@
 }
 
 body {
-    background: var(--gray-50);
+    // background: var(--gray-50);
+    background: white;
 }
 
 body, input, textarea, button {
