@@ -2,11 +2,41 @@ import { useEffect } from 'react';
 import { fadedMap, blackWhiteMap, earthquakeData, US_State_Literacy } from './conf';
 import { loadBingApi, Microsoft } from './loaderBingMaps';
 // import { Search, getBoundary } from './BoundaryFunctions';
+import colorscale from './colorscale.json';
 import styles from './styles.module.scss';
 
 export function BingMaps(props){
 
     var searchManager;
+
+    // Returns a single rgb color interpolation between given rgb color
+    // based on the factor given; via https://codepen.io/njmcode/pen/axoyD?editors=0010
+    const interpolateColor = (color1, color2, factor) => {
+        // if (arguments.length < 3) { 
+        //     factor = 0.5; 
+        // }
+        var result = color1.slice();
+        for (var i = 0; i < 3; i++) {
+            result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+        }
+        return result;
+    };
+    // My function to interpolate between two colors completely, returning an array
+    const interpolateColors = (color1, color2, steps) => {
+        var stepFactor = 1 / (steps - 1),
+            interpolatedColorArray = [];
+
+        color1 = color1.match(/\d+/g).map(Number);
+        color2 = color2.match(/\d+/g).map(Number);
+
+        for(var i = 0; i < steps; i++) {
+            interpolatedColorArray.push(interpolateColor(color1, color2, stepFactor * i));
+        }
+
+        return interpolatedColorArray;
+    }
+
+    var colors = interpolateColors(colorscale.inferno[0],colorscale.inferno[1], 5);
 
     const initMap = () => {
         
@@ -169,15 +199,20 @@ export function BingMaps(props){
             function assignContourColor(value) {
                 var color;
                 if (value >= 200) {
-                    color = 'rgba(215, 25, 28, 0.5)';
+                    // color = 'rgba(215, 25, 28, 0.5)';
+                    color = 'rgba('+colors[0]+',0.5)';
                 } else if (value >= 160) {
-                    color = 'rgba(235, 140, 14, 0.5)';
+                    // color = 'rgba(235, 140, 14, 0.5)';
+                    color = 'rgba('+colors[1]+',0.5)';
                 } else if (value >= 120) {
-                    color = 'rgba(255, 255, 0, 0.5)';
+                    // color = 'rgba(255, 255, 0, 0.5)';
+                    color = 'rgba('+colors[2]+',0.5)';
                 } else if (value >= 80) {
-                    color = 'rgba(140, 202, 32, 0.5)';
+                    // color = 'rgba(140, 202, 32, 0.5)';
+                    color = 'rgba('+colors[3]+',0.5)';
                 } else if (value >= 40) {
-                    color = 'rgba(25, 150, 65, 0.5)';
+                    // color = 'rgba(25, 150, 65, 0.5)';
+                    color = 'rgba('+colors[4]+',0.5)';
                 }
                 return color;
             }
@@ -185,47 +220,12 @@ export function BingMaps(props){
         }
 
         const plotChoropleth = () => {
-
-            // Returns a single rgb color interpolation between given rgb color
-            // based on the factor given; via https://codepen.io/njmcode/pen/axoyD?editors=0010
-            const interpolateColor = (color1, color2, factor) => {
-                // if (arguments.length < 3) { 
-                //     factor = 0.5; 
-                // }
-                var result = color1.slice();
-                for (var i = 0; i < 3; i++) {
-                    result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
-                }
-                return result;
-            };
-            // My function to interpolate between two colors completely, returning an array
-            const interpolateColors = (color1, color2, steps) => {
-                var stepFactor = 1 / (steps - 1),
-                    interpolatedColorArray = [];
-
-                color1 = color1.match(/\d+/g).map(Number);
-                color2 = color2.match(/\d+/g).map(Number);
-
-                for(var i = 0; i < steps; i++) {
-                    interpolatedColorArray.push(interpolateColor(color1, color2, stepFactor * i));
-                }
-
-                return interpolatedColorArray;
-            }
-            
+           
             //Create an array of locations to get the boundaries of
             var zipCodes = ['98116', '98136', '98106', '98126', '98108', '98118'];
 
-            var viridis = ['rgb(72, 21, 103)','rgb(253, 231, 37)'];
-            var magma = ['rgb(64,11,11)','rgb(255,219,0)'];
-            var plasma = ['rgb(14,8,135)','rgb(241,247,34)'];
-            var inferno = ['rgb(22,11,56)','rgb(244,221,79)'];
-            var cividis = ['rgb(0,46,111)','rgb(255,234,72)'];
-            var mako = ['rgb(72, 21, 103)', 'rgb(150,221,181)'];
-            var rocket = ['rgb(72, 21, 103)','rgb(246,158,117)'];
-            var turbo = ['rgb(56,40,111)','rgb(136,15,0)'];
-
-            var colors = interpolateColors(rocket[0],rocket[1],5);
+            // var colors = interpolateColors(rocket[0],rocket[1], 5);
+            // var colors = interpolateColors(colorscale.rocket[0],colorscale.rocket[1], 5);
 
             var states = [];
             US_State_Literacy.forEach(function(dict, i) {
@@ -389,11 +389,10 @@ export function BingMaps(props){
         if (props.localBoundary != ''){
             searchAndLoadGeometry();
         }
-        if (props.visibleContourLayer){
-            loadContour();
+        // if (props.visibleContourLayer){
+        loadContour();
             // objLayers['layer_Contour'].setVisible(false);
-
-        }
+        // }
         plotChoropleth();
         // searchBoundariesAndLoadChoropleth();
 

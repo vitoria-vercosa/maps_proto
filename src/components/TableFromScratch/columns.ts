@@ -1,7 +1,7 @@
 export const COLUMNS = [
     {
         Header:'ID',
-        keyof:"id",
+        key:"id",
         accessor:"id",
         visible: false,
         ordered:false

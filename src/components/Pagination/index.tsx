@@ -16,15 +16,8 @@ export function Pagination(props) {
         // props.changeRangeRecords(getRangeRecords());
     }
     const prevPage = () => {
-        // if (page != 1){
-        // setPage(page-1);
         
         setPage(page-1);
-        // console.log("apertou o prev")
-        // console.log("page: ",{page})
-        // console.log("range: ",{getRangeRecords()})
-
-        // props.changeRangeRecords(getRangeRecords());
     }
     const handlePage = (e) => {
         setPage(+e.target.value);
@@ -50,24 +43,6 @@ export function Pagination(props) {
 
     }
 
-    const renderRangeRecordsPage = (op:string) => {
-
-        var rangeMin: number, rangeMax: number;
-        
-        
-        switch (op){
-            case '+':
-                props.changeRangeRecords([sizePerPage, sizePerPage])
-                break;
-            
-            case '-':
-                break;
-
-            default:
-                break;
-        }
-    }
-
     const calcNumbPages = () => {
         var nPages = 0;
         if(sizePerPage < props.totalRegisters){
@@ -88,7 +63,7 @@ export function Pagination(props) {
         setNumberPage(calcNumbPages);
         props.changeRangeRecords(getRangeRecords());
 
-    })
+    }, [])
 
     useEffect(() => {
         props.changePage(page);
@@ -110,7 +85,7 @@ export function Pagination(props) {
                 onClick={prevPage}
                 disabled={page==1 ? true : false}
             >
-                <img src="./dds_chevron-up.svg" className={styles.btnPassPrevious}/> Previous
+                <img src="./dds_chevron-up.svg" className={styles.btnPassPrevious}/>
             </button>
 
             <div className={styles.paginationCenter}>
@@ -134,7 +109,6 @@ export function Pagination(props) {
                 onClick={nextPage} 
                 disabled={page>=numberPages ? true : false}
             >
-                Next
                 <img src="./dds_chevron-up.svg" className={styles.btnPassNext} /> 
             </button>
 
