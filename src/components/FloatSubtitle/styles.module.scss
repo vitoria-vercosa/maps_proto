@@ -28,17 +28,89 @@
         }
     }
     .contentSubtitle{
-        height: 5rem;
+        // height: 3rem;
         display: flex;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+        // align-items: flex-start;
         align-items: center;
         justify-content: center;
+        
+        .radioGroup{
+
+            label{
+                font-size: 0.75rem;
+            }
+            // flex-direction: column;
+            display: flex;
+            // flex-direction: column;
+            align-items: flex-start;
+            // height: 5rem;
+            
+            .radioGroupLeft{
+                margin-right: 6rem;
+            }
+            .slidecontainer{
+                display: block;
+                // flex-direction: column;
+            }
+        }
+
+        span{
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
     }
 
     #collapseCttSubtitled{
         height: 5rem;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        // align-items: center;
+        // justify-content: center;
+    }
+
+    .slidecontainer{
+        // width: 100%;
+        width: 14rem;
+        flex-direction: column;
+
+        label{
+            margin-top: 0.5rem;
+        }
+
+        .slider{
+            -webkit-appearance: none;  /* Override default CSS styles */
+            appearance: none;
+            width: 100%; /* Full-width */
+            height: 15px; /* Specified height */
+            background: #d3d3d3; /* Grey background */
+            outline: none; /* Remove outline */
+            opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1; /* Fully shown on mouse-over */
+        }
+
+        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Override default look */
+            appearance: none;
+            width: 15px; /* Set a specific slider handle width */
+            height: 15px; /* Slider handle height */
+            background: var(--blue-dds-500); /* Green background #04AA6D*/
+            cursor: pointer; /* Cursor on hover */
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 15px; /* Set a specific slider handle width */
+            height: 15px; /* Slider handle height */
+            background: var(--blue-dds-500) ; /* Green background #04AA6D*/
+            cursor: pointer; /* Cursor on hover */
+        }
     }
 
 }
