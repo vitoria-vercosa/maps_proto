@@ -4,14 +4,22 @@ import { loadBingApi, Microsoft } from './loaderBingMaps';
 // import { Search, getBoundary } from './BoundaryFunctions';
 import colorscale from './colorscale.json';
 import styles from './styles.module.scss';
+// import PAR_BR_RS from './../../../public/PAR_BR_RS.json';
 
-export function BingMaps(props){
+interface IpropsBingMaps {
+    localBoundary : string,
+    visibleContourLayer: boolean,
+    colorScale : string,
+    opacity : number
+}
 
-    var searchManager;
+export function BingMaps(props:IpropsBingMaps){
+
+    // var searchManager;
 
     // Returns a single rgb color interpolation between given rgb color
     // based on the factor given; via https://codepen.io/njmcode/pen/axoyD?editors=0010
-    const interpolateColor = (color1, color2, factor) => {
+    const interpolateColor = (color1:any, color2:any, factor:number) => {
         // if (arguments.length < 3) { 
         //     factor = 0.5; 
         // }
@@ -22,21 +30,61 @@ export function BingMaps(props){
         return result;
     };
     // My function to interpolate between two colors completely, returning an array
-    const interpolateColors = (color1, color2, steps) => {
+    const interpolateColors = (color1:string, color2:string, steps:number) => {
         var stepFactor = 1 / (steps - 1),
             interpolatedColorArray = [];
 
-        color1 = color1.match(/\d+/g).map(Number);
-        color2 = color2.match(/\d+/g).map(Number);
+        // var _color1 = color1.match(/\d+/g).map(Number);
+        // var _color2 = color2.match(/\d+/g).map(Number);
+        var _color1 = color1.slice(3).replace('(','').replace(')','').split(',').map(x=>+x);
+        var _color2 = color2.slice(3).replace('(','').replace(')','').split(',').map(x=>+x);
 
         for(var i = 0; i < steps; i++) {
-            interpolatedColorArray.push(interpolateColor(color1, color2, stepFactor * i));
+            interpolatedColorArray.push(interpolateColor(_color1, _color2, stepFactor * i));
         }
 
         return interpolatedColorArray;
     }
 
-    var colors = interpolateColors(colorscale.inferno[0],colorscale.inferno[1], 5);
+    var color1 : string;
+    var color2 : string;
+
+    switch(props.colorScale){
+        case "cividis": 
+            color1 = colorscale.cividis[0];
+            color2 = colorscale.cividis[1];
+            break;
+        case "inferno": 
+            color1 = colorscale.inferno[0];
+            color2 = colorscale.inferno[1];
+            break;
+        case "magma": 
+            color1 = colorscale.magma[0];
+            color2 = colorscale.magma[1];
+            break;
+        case "mako": 
+            color1 = colorscale.mako[0];
+            color2 = colorscale.mako[1];
+            break;
+        case "plasma": 
+            color1 = colorscale.plasma[0];
+            color2 = colorscale.plasma[1];
+            break;
+        case "rocket": 
+            color1 = colorscale.rocket[0];
+            color2 = colorscale.rocket[1];
+            break;
+        case "turbo": 
+            color1 = colorscale.turbo[0];
+            color2 = colorscale.turbo[1];
+            break;
+        case "viridis": 
+            color1 = colorscale.viridis[0];
+            color2 = colorscale.viridis[1];
+            break;
+    }
+
+    // var colors = interpolateColors(color1,color2, 5);
 
     const initMap = () => {
         
@@ -44,12 +92,7 @@ export function BingMaps(props){
         // return map.setOptions({ customMapStyle: fadedMap });
 
         const map = new Microsoft.Maps.Map('#myMap', { 
-            // customMapStyle: fadedMap, 
-            // customMapStyle: blackWhiteMap, 
             mapTypeId: Microsoft.Maps.MapTypeId.canvasLight,
-            // center: new Microsoft.Maps.Location(0, 0),
-            // center: new Microsoft.Maps.Location(-3.71722, -38.54306),
-            // center: new Microsoft.Maps.Location(-3.7, -38),
             zoom: 3 
         });
 
@@ -62,7 +105,9 @@ export function BingMaps(props){
         var objLayers = {
             'layer_Boundary' : new Microsoft.Maps.Layer(),
             'layer_Choropleth' : new Microsoft.Maps.Layer(),
-            'layer_infobox': new Microsoft.Maps.Layer()
+            'layer_infobox': new Microsoft.Maps.Layer(),
+            'layer_PAR_BR': new Microsoft.Maps.Layer(),
+            'layer_Countor' : new Microsoft.Maps.Layer()
         }
 
         // how to use a layer
@@ -81,6 +126,74 @@ export function BingMaps(props){
             */
         }
 
+        const LoadGSCVPolygons = () => {
+
+            var layer;
+
+            const getColor = (service_level:string) => {
+
+                var colors = interpolateColors(color1,color2, 9);
+
+                switch (service_level) { 
+                    // "RE","BE","4HR","NBD","2BD","2HR","6HR","8HR","BE","3BD"
+                    case "RE":
+                        return 'rgba('+colors[0]+','+props.opacity+')';
+                    case "BE":
+                        return 'rgba('+colors[1]+','+props.opacity+')';
+                    case "4HR":
+                        return 'rgba('+colors[2]+','+props.opacity+')';
+                    case "NBD":
+                        return 'rgba('+colors[3]+','+props.opacity+')';
+                    case "2HR":
+                        return 'rgba('+colors[4]+','+props.opacity+')';
+                    case "6HR":
+                        return 'rgba('+colors[5]+','+props.opacity+')';
+                    case "8HR":
+                        return 'rgba('+colors[6]+','+props.opacity+')';
+                    case "2BD":
+                        return 'rgba('+colors[7]+','+props.opacity+')';
+                    case "3BD":
+                        return 'rgba('+colors[8]+','+props.opacity+')';
+                }
+            }
+
+            // var myGeoJson = {
+            //     "type": "Polygon",
+            //     "coordinates": [[
+            //             [-122.12901, 47.64178],
+            //             [-122.12901, 47.64226],
+            //             [-122.12771, 47.64226],
+            //             [-122.12771, 47.64178],
+            //             [-122.12901, 47.64178]
+            //     ]]
+            // };
+            
+            //Load the GeoJson Module.
+            Microsoft.Maps.loadModule('Microsoft.Maps.GeoJson', function () {
+
+                //Parse the GeoJson object into a Bing Maps shape.
+                var shape = Microsoft.Maps.GeoJson.read(PAR_BR_RS, {
+                    polygonOptions: {
+                        fillColor: 'rgba(255,0,0,0.5)',
+                        strokeColor: 'black',
+                        strokeThickness: 1
+                    }
+                });
+
+                console.log("SHAPE HERE ", shape)
+                var polygons = [];
+                for (var i = 0; i<shape.length; i++){
+                    // polygons.push(new Microsoft.Maps.)
+                    polygons.push( new Microsoft.Maps.Polygon(shape[i].getLocations(),{fillColor:getColor(shape[i].metadata.service_level)} ) ) //shape[i].setOptions( {fillColor: getColor(shape[i].metadata.service_level)} )
+                }
+                
+
+                //Add the shape to the map.
+                map.entities.push(polygons);
+
+            });
+        }
+
         const searchAndLoadGeometry = () => {
 
             Microsoft.Maps.loadModule(
@@ -95,7 +208,7 @@ export function BingMaps(props){
                 }
             );
     
-            const getBoundary = (geocodeResult) => {
+            const getBoundary = (geocodeResult:any) => {
     
                 //Add the first result to the map and zoom into it.
                 if (geocodeResult && geocodeResult.results && geocodeResult.results.length > 0) {
@@ -124,7 +237,7 @@ export function BingMaps(props){
                     var geoDataRequestOptions = {
                         lod : 1, 
                         getAllPolygons: true,
-                        // entityType: "PopulatedPlace"
+                        entityType: null
                     };
     
                     //Verify that the geocoded location has a supported entity type.
@@ -139,6 +252,7 @@ export function BingMaps(props){
                         case "Neighborhood":
                         case "PopulatedPlace":
                             geoDataRequestOptions['entityType'] = geocodeResult.results[0].entityType;
+                            console.log("Local ", geocodeResult.results[0].entityType);
                             break;
                         default:
                             //Display a pushpin if GeoData API does not support EntityType.
@@ -147,33 +261,15 @@ export function BingMaps(props){
                             return;
                     }
                     
-                    /*
-                    //Use the GeoData API manager to get the boundary of the zip codes
-                    Microsoft.Maps.SpatialDataService.GeoDataAPIManager.getBoundary(
-                        geocodeResult.results[0].location,
-                        geoDataRequestOptions,
-                        map,
-                        function (data) {
-                            //Add the polygons to the map.
-                            if (data.results && data.results.length > 0) {
-                                // map.entities.push(data.results[0].Polygons);
-                                objLayers.layer_Boundary.add(data.results[0].Polygons);
-                                map.layers.insert(objLayers.layer_Boundary);
-                            }
-                        },
-                        null,
-                        function errCallback(networkStatus, statusMessage) {
-                            console.log(networkStatus);
-                            console.log(statusMessage);
-                        }
-                    );
-                    */
+
                 }
                 
             }
         }
 
         const loadContour = () => {
+
+            var colors = interpolateColors(color1,color2, 5);
 
             // var contourLine1, contourLine2, contourLine3, contourLine4, contourLine5, contourLine6;
             var layer;
@@ -192,11 +288,11 @@ export function BingMaps(props){
                 // /* Apparently, it is not possible to insert a ContourLayer into a Layer */ //
                 // objLayers.layer_Contour.add(layer);
                 // map.layers.insert(objLayers.layer_Contour);
-                objLayers['layer_Contour'] = layer;
-                map.layers.insert(objLayers['layer_Contour']);
+                objLayers.layer_Countor.add(layer);
+                map.layers.insert(objLayers.layer_Countor);
             });
 
-            function assignContourColor(value) {
+            function assignContourColor(value : number) {
                 var color;
                 if (value >= 200) {
                     // color = 'rgba(215, 25, 28, 0.5)';
@@ -227,7 +323,7 @@ export function BingMaps(props){
             // var colors = interpolateColors(rocket[0],rocket[1], 5);
             // var colors = interpolateColors(colorscale.rocket[0],colorscale.rocket[1], 5);
 
-            var states = [];
+            var states : string[];
             US_State_Literacy.forEach(function(dict, i) {
                 states.push(dict['stateName']);
             });
@@ -246,45 +342,42 @@ export function BingMaps(props){
                 getAllPolygons: true
             };
 
-            const displayInfobox = (e) => {
-                if (e.target){
-                    var point = new Microsoft.Maps.Point(e.getX(), e.getY());
+            {
+            // const displayInfobox = (e) => {
+            //     if (e.target){
+            //         var point = new Microsoft.Maps.Point(e.getX(), e.getY());
 
-                    console.log("O LOCAL QUE EU CLIQUEI ", [e.getX(),e.getY()]);
-                    var loc = map.tryPixelToLocation(point);
+            //         console.log("O LOCAL QUE EU CLIQUEI ", [e.getX(),e.getY()]);
+            //         var loc = map.tryPixelToLocation(point);
 
-                    infobox.setLocation(loc);
+            //         infobox.setLocation(loc);
 
-                    var opt = e.target.metadata;
+            //         var opt = e.target.metadata;
 
-                    if(opt){
+            //         if(opt){
 
-                        // if(e.target.getIcon){ //is pushpin
-                        //     opt.offset = new Microsoft.Maps.Point(0,20);
-                        // }else{
-                        //     opt.offset = new Microsoft.Maps.Point(0,0);
-                        // }
-
-                        opt.visible = true;
-                        infobox.setOptions(opt);
-                    }
-                }
+            //             opt.visible = true;
+            //             infobox.setOptions(opt);
+            //         }
+            //     }
+            // }
+            
+            // const createLegend = () => {
+            //     //Create HTML for legend
+            //     var legendHtml = [],
+            //         max = 20,
+            //         increment = 5;
+        
+            //     for (var i = max; i >= 0; i -= increment) {
+            //         legendHtml.push('<svg width="12" height="12"><rect width="12" height="12" style="fill:');
+            //         legendHtml.push(getLegendColor(i), '"></rect></svg> ');
+            //         legendHtml.push((i == max) ? i + '+' : i + '-' + (i + increment), '<br/>');
+            //     }
+        
+            //     document.getElementById('legend').innerHTML = legendHtml.join('');
+            // }
             }
 
-            const createLegend = () => {
-                //Create HTML for legend
-                var legendHtml = [],
-                    max = 20,
-                    increment = 5;
-        
-                for (var i = max; i >= 0; i -= increment) {
-                    legendHtml.push('<svg width="12" height="12"><rect width="12" height="12" style="fill:');
-                    legendHtml.push(getLegendColor(i), '"></rect></svg> ');
-                    legendHtml.push((i == max) ? i + '+' : i + '-' + (i + increment), '<br/>');
-                }
-        
-                document.getElementById('legend').innerHTML = legendHtml.join('');
-            }
 
 
             Microsoft.Maps.loadModule(
@@ -295,7 +388,7 @@ export function BingMaps(props){
                         states,
                         geoDataRequestOptions,
                         map,
-                        function (data) {
+                        function (data : any) {
                             if (data.results && data.results.length > 0) {
                                 // var info = US_State_Literacy.indexOf(data['location']) ;
                                 var info = US_State_Literacy.filter( obj => {
@@ -329,32 +422,12 @@ export function BingMaps(props){
 
                                                                 
                                 // Microsoft.Maps.Events.addHandler(data.results[0].Polygons, 'click', displayInfobox);
-                                // Microsoft.Maps.Events.addHandler(polygon, 'click', () => {alert("OTARIA")});
 
-                                {/*
-                                const pushPolygonClicked = (e) => {
-                                    //Make sure the infobox has metadata to display.
-                                    if (e.target.metadata) {
-                                        //Set the infobox options with the metadata of the pushpin.
-                                        infobox.setOptions({
-                                            location: e.target.getLocation(),
-                                            title: e.target.metadata.title,
-                                            description: e.target.metadata.description,
-                                            visible: true
-                                        });
-                                    }
-                                }
-
-                                // Microsoft.Maps.Events.addHandler(polygon, 'click', pushPolygonClicked);
-                                    
-                                // map.entities.push(data.results[0].Polygons);
-                                // map.entities.push(polygon);
-                                    // infobox.setMap(map);
-                                */}
+                                
                             }
                         },
                         null,
-                        function errCallback(callbackState, networkStatus, statusMessage) {
+                        function errCallback(callbackState:any, networkStatus:any, statusMessage:any) {
                             console.log(callbackState);
                             console.log(networkStatus);
                             console.log(statusMessage);
@@ -363,22 +436,24 @@ export function BingMaps(props){
                 }
             );
 
-            const getLegendColor = (val) => {
+            var colors = interpolateColors(color1,color2, 5);
+
+            const getLegendColor = (val:number) => {
                 if(val >= 20){
                     // return '#00bc25';//'rgba(189,0,38,0.6)'; //#bc0025 #2500bc #00bc25
-                    return 'rgba('+colors[0]+',0.5)'
+                    return 'rgba('+colors[0]+','+props.opacity+')'
                 }else if(val >= 15){
                     // return '#19e31b';//'rgba(227,26,28,0.6)'; //#e3191b #191be3 #19e31b
-                    return 'rgba('+colors[1]+',0.5)'
+                    return 'rgba('+colors[1]+','+props.opacity+')'
                 }else if(val >= 10){
                     // return '#3cfd8c';//'rgba(253,141,60,0.6)'; //#fd8c3c #3c8cfd #3cfd8c
-                    return 'rgba('+colors[2]+',0.5)'
+                    return 'rgba('+colors[2]+','+props.opacity+')'
                 }else if(val >= 5){
                     // return '#75fdd9';//'rgba(254,217,118,0.6)'; //#fdd975 #75d9fd #75fdd9
-                    return 'rgba('+colors[3]+',0.5)'
+                    return 'rgba('+colors[3]+','+props.opacity+')'
                 }else {
                     // return '#cbffdd';//'rgba(255,255,204,0.6)'; //#ffffcb #cbffff #cbffdd
-                    return 'rgba('+colors[4]+',0.5)'
+                    return 'rgba('+colors[4]+','+props.opacity+')'
                 }
             }
 
@@ -390,17 +465,18 @@ export function BingMaps(props){
             searchAndLoadGeometry();
         }
         // if (props.visibleContourLayer){
-        loadContour();
+        // loadContour();
             // objLayers['layer_Contour'].setVisible(false);
         // }
-        plotChoropleth();
+        // plotChoropleth();
         // searchBoundariesAndLoadChoropleth();
+        LoadGSCVPolygons();
 
         return map;
     }
 
     useEffect( () => {
-        loadBingApi("AjMWCAtX2R3I4Pk26FRpsm6_SALJxWdGOjIy80CG0uSPdkpzbp3ps9wD6MZ_Hdh7").then( () => {
+        loadBingApi("BINGMAPS_KEY").then( () => {
             initMap();
         })
 
