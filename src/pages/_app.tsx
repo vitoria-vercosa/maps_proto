@@ -22,6 +22,9 @@ function MyApp({ Component, pageProps }) {
   const [ localBoundary, setLocalBoundary ] = useState('');
   const [ visibleContourLayer, setVisibleContourLayer ] = useState(false);
   const [ currentDataTable , setCurrentDataTable ] = useState(coverage_brasil);
+  
+  const [ colorScale , setColorScale ] = useState<string>("viridis");
+  const [ opacityMap, setOpacityMap ] = useState<number>(0.5);
 
 
   const collapse = () => {
@@ -41,7 +44,12 @@ function MyApp({ Component, pageProps }) {
         <Header />
         <Component {...pageProps} />
         {/* <MapZone localBoundary={localBoundary} visibleContourLayer={visibleContourLayer}/> */}
-        <BingMaps localBoundary={localBoundary} visibleContourLayer={visibleContourLayer}/>
+        <BingMaps 
+          localBoundary={localBoundary} 
+          visibleContourLayer={visibleContourLayer}
+          colorScale={colorScale} 
+          opacity={opacityMap}
+          />
         <div id="collapseTable" style={{display: "none"}}>
           <div className={styles.Table}>
             {/* <h1>
@@ -61,7 +69,11 @@ function MyApp({ Component, pageProps }) {
       <div className={styles.floatPainel}>
 
         <FloatControl setLocalBoundary={setLocalBoundary}/>
-        <FloatSubtitle></FloatSubtitle>
+        <FloatSubtitle 
+          setColors={setColorScale} 
+          changeOpacity={setOpacityMap} 
+          >
+        </FloatSubtitle>
 
       </div>
       <div className={styles.floatViewTableBtn} onClick={collapse}>
